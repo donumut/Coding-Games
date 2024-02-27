@@ -1,0 +1,63 @@
+import pygame
+import sys
+
+# Initialize Pygame
+pygame.init()
+
+# Constants
+WIDTH, HEIGHT = 600, 600
+GRID_SIZE = 30
+FPS = 10
+
+# Colors
+BLACK = (0, 0, 0)
+YELLOW = (255, 255, 0)
+
+# Create the game window
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Pacman Game")
+
+# Pacman attributes
+pacman_pos = [300, 300]
+pacman_radius = 15
+pacman_angle = 45
+pacman_direction = "RIGHT"
+
+# Main game loop
+clock = pygame.time.Clock()
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+    # Move Pacman
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_UP]:
+        pacman_direction = "UP"
+        pacman_pos[1] -= GRID_SIZE
+    elif keys[pygame.K_DOWN]:
+        pacman_direction = "DOWN"
+        pacman_pos[1] += GRID_SIZE
+    elif keys[pygame.K_LEFT]:
+        pacman_direction = "LEFT"
+        pacman_pos[0] -= GRID_SIZE
+    elif keys[pygame.K_RIGHT]:
+        pacman_direction = "RIGHT"
+        pacman_pos[0] += GRID_SIZE
+
+    # Draw the background
+    screen.fill(BLACK)
+
+    # Draw Pacman
+    pygame.draw.circle(screen, YELLOW, pacman_pos, pacman_radius)
+    pygame.draw.polygon(screen, BLACK, [(pacman_pos[0], pacman_pos[1]),
+                                        (pacman_pos[0] + pacman_radius, pacman_pos[1] - pacman_radius),
+                                        (pacman_pos[0] + pacman_radius, pacman_pos[1] + pacman_radius)],
+                       0)
+
+    # Update the display
+    pygame.display.flip()
+
+    # Control the frame rate
+    clock.tick(FPS)
